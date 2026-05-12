@@ -1,0 +1,23 @@
+name: Lab 8 CI Check
+
+on: [push] # Запускати при кожному завантаженні коду
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Використовуємо віртуальну машину на Linux
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # Копіюємо код у віртуальну машину
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run CI Test
+        # Ця команда перевіряє логіку твого server.js без запуску всього сервера
+        run: node -e "const {validateAge} = require('./server.js'); if(validateAge(20).valid !== true) process.exit(1)"
